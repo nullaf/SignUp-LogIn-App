@@ -11,18 +11,34 @@
 .signIn {
  text-align: center;
   margin: auto;
-  width: 50%;
-  height: 50%;
+  width: 50vw;
+  height: 50vh;
   min-width: 200px;
   max-width: 400px;
+  min-height: 370px;
   padding: 40px;
   position: absolute;
-  background: #404654;
+  background: #2c303a;
 
   top: 0; left: 0; bottom: 0; right: 0;
   box-shadow: inset 0px 5px 20px 0px rgba(0,0,0,0.75);
-
 }
+.signUp {
+  text-align: center;
+  margin: auto;
+  width: 60vw;
+  height: 60vh;
+  min-width: 200px;
+  max-width: 400px;
+  min-height: 450px;
+  padding: 40px;
+  position: absolute;
+  background: #2c303a;
+
+  top: 0; left: 0; bottom: 0; right: 0;
+  box-shadow: inset 0px 5px 20px 0px rgba(0,0,0,0.75);
+}
+
 .textfieldgrid{
   .username {
     margin-top: 1em;
