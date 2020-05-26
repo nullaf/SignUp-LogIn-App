@@ -19,6 +19,7 @@ const theme = createMuiTheme({
     type: "dark",
   },
 });
+var validator = require("email-validator");
 
 function App() {
   const [inputState, setInput] = useState("");
@@ -28,6 +29,7 @@ function App() {
   const [username, setUsername] = useState("");
   const [showPassState, setShowPass] = useState(false);
   const [isMailState, setIsMail] = useState(false);
+  const [isMailState2, setIsMail2] = useState(false);
   const [passEqualState, setPassEqual] = useState(true);
 
   const handleMouseDownPassword = (event) => {
@@ -109,19 +111,21 @@ function App() {
                   autoFocus
                   required
                   color="secondary"
-                  type={isMailState ? email : null}
+                  type={isMailState2 ? email : null}
                   value={inputState}
+
                   onChange={(e) => {
                     setInput(e.target.value);
-                    setIsMail(e.target.value.includes("@"));
+                    setIsMail2(e.target.value.includes("@"));
+                    setIsMail(validator.validate(e.target.value));
                   }}
                   InputProps={{
                     startAdornment: (
                       <InputAdornment position="start">
-                        {isMailState ? null : (
+                        {isMailState2 ? null : (
                           <AccountCircle color="secondary" />
                         )}
-                        {isMailState ? <MailIcon color="secondary" /> : null}
+                        {isMailState2 ? <MailIcon color="secondary" /> : null}
                       </InputAdornment>
                     ),
                   }}
@@ -263,11 +267,15 @@ function App() {
                   fullWidth
                   required
                   error={isMailState || !email.length ? 0 : 1}
-                  helperText={isMailState || !email.length ? "" : "Your email address is invalid."}
+                  helperText={
+                    isMailState || !email.length
+                      ? ""
+                      : "Your email address is invalid."
+                  }
                   color="secondary"
                   onChange={(e) => {
                     setEmail(e.target.value);
-                    setIsMail(e.target.value.includes("@"));
+                    setIsMail(validator.validate(e.target.value));
                   }}
                   value={email}
                   InputProps={{
@@ -330,7 +338,11 @@ function App() {
                   fullWidth
                   required
                   error={passEqualState ? 0 : 1}
-                  helperText={passEqualState ? "" : "The password confirmation does not match."}
+                  helperText={
+                    passEqualState
+                      ? ""
+                      : "The password confirmation does not match."
+                  }
                   color="secondary"
                   value={confirmPassword}
                   onChange={(e) => {
