@@ -1,4 +1,6 @@
-
+body {
+  height: 100vh;
+}
 .buttons .nav {
   text-decoration: none;
   color: rgb(245,0,87);
@@ -8,17 +10,34 @@
 
   }
 }
+.successPart {
+  text-align: center;
+  left: 0; right: 0; top: 0;
+  height: 3vh;
+
+}
+.errorPart {
+  display: grid;
+  grid-template-rows: auto;
+  margin-top: 0.5em;
+  text-align: center;
+  justify-content: center;
+  align-items: center;
+  background: #100e17;
+  box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.75);
+}
+
 .signIn {
  text-align: center;
   margin: auto;
   width: 50vw;
-  height: 50vh;
+  height: 60vh;
   min-width: 200px;
   max-width: 400px;
-  min-height: 370px;
+  min-height: 520px;
   padding: 40px;
   position: absolute;
-  background: #2c303a;
+  background: #1d1e22;
 
   top: 0; left: 0; bottom: 0; right: 0;
   box-shadow: inset 0px 5px 20px 0px rgba(0,0,0,0.75);
@@ -33,7 +52,7 @@
   min-height: 450px;
   padding: 40px;
   position: absolute;
-  background: #2c303a;
+  background: #1d1e22;
 
   top: 0; left: 0; bottom: 0; right: 0;
   box-shadow: inset 0px 5px 20px 0px rgba(0,0,0,0.75);

@@ -13,6 +13,9 @@ import { createMuiTheme, ThemeProvider } from "@material-ui/core/styles";
 import IconButton from "@material-ui/core/IconButton";
 import Visibility from "@material-ui/icons/Visibility";
 import VisibilityOff from "@material-ui/icons/VisibilityOff";
+import ErrorOutlineIcon from "@material-ui/icons/ErrorOutline";
+import Home from "./Components/home";
+import app from "./firebase";
 
 const theme = createMuiTheme({
   palette: {
@@ -22,15 +25,15 @@ const theme = createMuiTheme({
 var validator = require("email-validator");
 
 function App() {
-  const [inputState, setInput] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [username, setUsername] = useState("");
   const [showPassState, setShowPass] = useState(false);
   const [isMailState, setIsMail] = useState(false);
   const [isMailState2, setIsMail2] = useState(false);
   const [passEqualState, setPassEqual] = useState(true);
+  const [errorState, setError] = useState("");
+  const [succesState, setSucces] = useState("");
 
   const handleMouseDownPassword = (event) => {
     event.preventDefault();
@@ -41,28 +44,63 @@ function App() {
   };
 
   function validateFormSignIn() {
-    return inputState.length > 0 && password.length;
+    return email.length > 0 && password.length;
   }
   function validateFormSignUp() {
     return (
       email.length > 0 &&
       password.length > 0 &&
       confirmPassword.length > 0 &&
-      username.length > 0 &&
       passEqualState &&
       isMailState
     );
   }
-  function handleSubmit(event) {
+  const handleSubmit = (event) => {
     event.preventDefault();
-  }
+  };
+  const onSubmitSignup = async (event) => {
+    try {
+      const user = await app
+        .auth()
+        .createUserWithEmailAndPassword(email, password);
+      setSucces("You created your account successfully!");
+      setTimeout(() => {
+        setAuth(1);
+        setSucces("");
+      }, 2500);
+      setError("");
+    } catch (error) {
+      alert(error);
+    }
+  };
+  const onSubmitSignin = async (event) => {
+    try {
+      const user = await app.auth().signInWithEmailAndPassword(email, password);
+      setAuth(1);
+      setError("");
+    }catch (error) {
+      setError(error.message);
+    }
+  };
+  const passwordReset = async (event) => {
+    try {
+      const user = await app.auth().sendPasswordResetEmail(email);
+      setSucces("We have emailed your reset link!");
+    } catch (error) {
+      !email.length
+        ? setError(
+            "You should enter your email before clicking forgot password."
+          )
+        : setError(error.message);
+    }
+  };
 
   const [authState, setAuth] = useState(0);
   if (authState === 1) {
     return (
       <div className="App">
         <Helmet>
-          <style>{"body { background-color: #EFEFEF; }"}</style>
+          <style>{"body { background-color: #100e17; }"}</style>
         </Helmet>
 
         <Button
@@ -76,15 +114,19 @@ function App() {
         >
           Sign Out
         </Button>
+        <Home/>
       </div>
     );
   } else if (authState === 0) {
     return (
       <ThemeProvider theme={theme}>
         <form noValidate autoComplete="off" onSubmit={handleSubmit}>
+          <div className="successPart" style={succesState !== "" ? {background: "greenyellow"} : null}>
+            <b>{succesState}</b>
+          </div>
           <div className="signIn">
             <Helmet>
-              <style>{"body { background-color: #2c303a; }"}</style>
+              <style>{"body { background-color: #100e17; }"}</style>
             </Helmet>
             <Typography variant="h2" color="secondary">
               Sign In
@@ -105,17 +147,16 @@ function App() {
                 className="username"
               >
                 <TextField
-                  label="Username or Email"
+                  label="Email"
                   variant="outlined"
                   fullWidth
                   autoFocus
                   required
                   color="secondary"
                   type={isMailState2 ? email : null}
-                  value={inputState}
-
+                  value={email}
                   onChange={(e) => {
-                    setInput(e.target.value);
+                    setEmail(e.target.value);
                     setIsMail2(e.target.value.includes("@"));
                     setIsMail(validator.validate(e.target.value));
                   }}
@@ -180,9 +221,7 @@ function App() {
                 fullWidth
                 type="submit"
                 disabled={!validateFormSignIn()}
-                onClick={() => {
-                  setAuth(1);
-                }}
+                onClick={onSubmitSignin}
               >
                 Login
               </Button>
@@ -206,9 +245,20 @@ function App() {
                 color="secondary"
                 fullWidth
                 floatingLabelText="Password"
+                onClick={passwordReset}
               >
                 Forgot Password
               </Button>
+              <div className="errorPart">
+                {errorState !== "" ? (
+                  <ErrorOutlineIcon fontSize="large" color="secondary" />
+                ) : (
+                  ""
+                )}
+                <Typography variant="h5" color="secondary" fullWidth>
+                  {errorState !== "" ? errorState : ""}
+                </Typography>
+              </div>
             </Grid>
           </div>
         </form>
@@ -218,13 +268,18 @@ function App() {
     return (
       <ThemeProvider theme={theme}>
         <form noValidate autoComplete="off" onSubmit={handleSubmit}>
+          <div className="successPart" style={succesState !== "" ? {background: "greenyellow"} : null}>
+            <b >{succesState}</b>
+          </div>
           <div className="signUp">
             <Helmet>
-              <style>{"body { background-color: #2c303a; }"}</style>
+              <style>{"body { background-color: #100e17; }"}</style>
             </Helmet>
+
             <Typography variant="h2" color="secondary">
               Sign Up
             </Typography>
+
 
             <Grid
               container
@@ -241,26 +296,6 @@ function App() {
                 className="username"
               >
                 <TextField
-                  label="Username"
-                  variant="outlined"
-                  fullWidth
-                  autoFocus
-                  required
-                  value={username}
-                  onChange={(e) => setUsername(e.target.value)}
-                  color="secondary"
-                  InputProps={{
-                    startAdornment: (
-                      <InputAdornment position="start">
-                        <AccountCircle color="secondary" />
-                      </InputAdornment>
-                    ),
-                  }}
-                >
-                  {" "}
-                </TextField>
-                <TextField
-                  style={{ marginTop: "1em" }}
                   label="Email"
                   type="email"
                   variant="outlined"
@@ -376,11 +411,10 @@ function App() {
                 variant="contained"
                 size="large"
                 color="secondary"
+                type="submit"
                 fullWidth
                 disabled={!validateFormSignUp()}
-                onClick={() => {
-                  setAuth(0);
-                }}
+                onClick={onSubmitSignup}
               >
                 Sign Up
               </Button>
