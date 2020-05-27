@@ -17,7 +17,6 @@ import ErrorOutlineIcon from "@material-ui/icons/ErrorOutline";
 import Home from "./Components/home";
 import app from "./firebase";
 
-
 const theme = createMuiTheme({
   palette: {
     type: "dark",
@@ -35,7 +34,7 @@ function App() {
   const [passEqualState, setPassEqual] = useState(true);
   const [errorState, setError] = useState("");
   const [succesState, setSucces] = useState("");
-  const [verifyState , setVerify] = useState(1);
+  const [verifyState, setVerify] = useState(1);
 
   const handleMouseDownPassword = (event) => {
     event.preventDefault();
@@ -63,14 +62,15 @@ function App() {
 
   const sendEmail = async (event) => {
     try {
-      const user = await app.auth().signInWithEmailAndPassword(email, password).then(userData => {
-        userData.user.sendEmailVerification()
-        setSucces("Email verification sent successfully!")
-      })
-
-    }
-    catch(error) {
-      alert(error);
+      const user = await app
+        .auth()
+        .signInWithEmailAndPassword(email, password)
+        .then((userData) => {
+          userData.user.sendEmailVerification();
+          setSucces("Email verification sent successfully!");
+        });
+    } catch (error) {
+      setError(error.message);
     }
   };
 
@@ -80,30 +80,30 @@ function App() {
         .auth()
         .createUserWithEmailAndPassword(email, password)
         .then((userData) => {
-          userData.user.sendEmailVerification()
+          userData.user.sendEmailVerification();
           setSucces("Email verification sent successfully!");
+          setError("");
         });
-
     } catch (error) {
-      alert(error);
+      setError(error.message);
     }
   };
   const onSubmitSignin = async (event) => {
-
     try {
-      const user = await app.auth().signInWithEmailAndPassword(email, password).then(userData => {
-        if(userData.user.emailVerified) {
-          setAuth(1);
-          setError("");
-          setSucces("")
-          setVerify(1)
-        }
-        else {
-          setError("You need to verify your email address before login.")
-          setVerify(0)
-        }
-      })
-
+      const user = await app
+        .auth()
+        .signInWithEmailAndPassword(email, password)
+        .then((userData) => {
+          if (userData.user.emailVerified) {
+            setAuth(1);
+            setError("");
+            setSucces("");
+            setVerify(1);
+          } else {
+            setError("You need to verify your email address before login.");
+            setVerify(0);
+          }
+        });
     } catch (error) {
       setError(error.message);
     }
@@ -114,9 +114,7 @@ function App() {
       setSucces("We have emailed your reset link!");
     } catch (error) {
       !email.length
-        ? setError(
-            "You should enter your email before using forgot password."
-          )
+        ? setError("You should enter your email before using forgot password.")
         : setError(error.message);
     }
   };
@@ -263,6 +261,9 @@ function App() {
                 floatingLabelText="Password"
                 onClick={() => {
                   setAuth(2);
+                  setError("");
+                  setSucces("");
+                  setVerify(1);
                 }}
               >
                 Sign Up
@@ -278,18 +279,25 @@ function App() {
               >
                 Forgot Password
               </Button>
-              <div className="errorPart">
-                {errorState !== "" ? (
-                  <ErrorOutlineIcon fontSize="large" color="secondary" />
-                ) : (
-                  ""
-                )}
-                <Typography variant="h6" color="secondary" fullWidth>
-                  {errorState !== "" ? errorState : ""}
-                </Typography>
-                <Button color="secondary" onClick={sendEmail} variant="outlined" style={verifyState ? {display: "none"} : null}>Send Verification</Button>
-              </div>
             </Grid>
+          </div>
+          <div className="errorPart">
+            {errorState !== "" ? (
+              <ErrorOutlineIcon fontSize="large" color="secondary" />
+            ) : (
+              ""
+            )}
+            <Typography variant="h6" color="secondary" fullWidth>
+              {errorState !== "" ? errorState : ""}
+            </Typography>
+            <Button
+              color="secondary"
+              onClick={sendEmail}
+              variant="outlined"
+              style={verifyState ? { display: "none" } : null}
+            >
+              Send Verification
+            </Button>
           </div>
         </form>
       </ThemeProvider>
@@ -458,11 +466,32 @@ function App() {
                 fullWidth
                 onClick={() => {
                   setAuth(0);
+                  setError("");
+                  setSucces("");
+                  setVerify(1);
                 }}
               >
                 Back
               </Button>
             </Grid>
+          </div>
+          <div className="errorPart">
+            {errorState !== "" ? (
+              <ErrorOutlineIcon fontSize="large" color="secondary" />
+            ) : (
+              ""
+            )}
+            <Typography variant="h6" color="secondary" fullWidth>
+              {errorState !== "" ? errorState : ""}
+            </Typography>
+            <Button
+              color="secondary"
+              onClick={sendEmail}
+              variant="outlined"
+              style={verifyState ? { display: "none" } : null}
+            >
+              Send Verification
+            </Button>
           </div>
         </form>
       </ThemeProvider>

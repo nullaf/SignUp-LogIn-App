@@ -12,19 +12,22 @@ body {
 }
 .successPart {
   text-align: center;
+  position: fixed;
   left: 0; right: 0; top: 0;
   height: 3vh;
 
 }
 .errorPart {
-  display: grid;
-  grid-template-rows: auto;
-  margin-top: 0.5em;
+  margin-top: 3vh;
+  position: fixed;
   text-align: center;
   justify-content: center;
   align-items: center;
   background: #100e17;
   box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.75);
+  left: 0;
+  right: 0;
+  top: 0;
 }
 
 .signIn {
@@ -34,7 +37,7 @@ body {
   height: 60vh;
   min-width: 200px;
   max-width: 400px;
-  min-height: 520px;
+  min-height: 375px;
   padding: 40px;
   position: absolute;
   background: #1d1e22;
@@ -49,7 +52,7 @@ body {
   height: 60vh;
   min-width: 200px;
   max-width: 400px;
-  min-height: 450px;
+  min-height: 375px;
   padding: 40px;
   position: absolute;
   background: #1d1e22;
