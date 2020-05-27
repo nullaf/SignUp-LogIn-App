@@ -227,6 +227,7 @@ function App() {
                     endAdornment: (
                       <InputAdornment position="end">
                         <IconButton
+                          color="secondary"
                           aria-label="toggle password visibility"
                           onClick={handleClickShowPassword}
                           onMouseDown={handleMouseDownPassword}
@@ -393,6 +394,7 @@ function App() {
                     endAdornment: (
                       <InputAdornment position="end">
                         <IconButton
+                            color="secondary"
                           aria-label="toggle password visibility"
                           onClick={handleClickShowPassword}
                           onMouseDown={handleMouseDownPassword}
@@ -433,6 +435,7 @@ function App() {
                     endAdornment: (
                       <InputAdornment position="end">
                         <IconButton
+                            color="secondary"
                           aria-label="toggle password visibility"
                           onClick={handleClickShowPassword}
                           onMouseDown={handleMouseDownPassword}
