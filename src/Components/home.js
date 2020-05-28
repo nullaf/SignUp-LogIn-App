@@ -1,6 +1,6 @@
 import React from "react";
 import "./home.scss";
-import {Helmet} from "react-helmet";
+
 
 
 function Home() {
