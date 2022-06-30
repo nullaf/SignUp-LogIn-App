@@ -33,7 +33,7 @@ function App() {
   const [isMailState2, setIsMail2] = useState(false);
   const [passEqualState, setPassEqual] = useState(true);
   const [errorState, setError] = useState("");
-  const [succesState, setSucces] = useState("");
+  const [successSate, setSuccess] = useState("");
   const [verifyState, setVerify] = useState(1);
 
   const handleMouseDownPassword = (event) => {
@@ -67,7 +67,7 @@ function App() {
         .signInWithEmailAndPassword(email, password)
         .then((userData) => {
           userData.user.sendEmailVerification();
-          setSucces("Email verification sent successfully!");
+          setSuccess("Email verification sent successfully!");
         });
     } catch (error) {
       setError(error.message);
@@ -81,7 +81,7 @@ function App() {
         .createUserWithEmailAndPassword(email, password)
         .then((userData) => {
           userData.user.sendEmailVerification();
-          setSucces("Email verification sent successfully!");
+          setSuccess("Email verification sent successfully!");
           setError("");
         });
     } catch (error) {
@@ -97,7 +97,7 @@ function App() {
           if (userData.user.emailVerified) {
             setAuth(1);
             setError("");
-            setSucces("");
+            setSuccess("");
             setVerify(1);
           } else {
             setError("You need to verify your email address before login.");
@@ -111,7 +111,7 @@ function App() {
   const passwordReset = async (event) => {
     try {
       const user = await app.auth().sendPasswordResetEmail(email);
-      setSucces("We have emailed your reset link!");
+      setSuccess("We have emailed your reset link!");
     } catch (error) {
       !email.length
         ? setError("You should enter your email before using forgot password.")
@@ -147,9 +147,9 @@ function App() {
         <form noValidate autoComplete="off" onSubmit={handleSubmit}>
           <div
             className="successPart"
-            style={succesState !== "" ? { background: "greenyellow" } : null}
+            style={successSate !== "" ? { background: "greenyellow" } : null}
           >
-            <b>{succesState}</b>
+            <b>{successSate}</b>
           </div>
           <div className="signIn">
             <Helmet>
@@ -263,7 +263,7 @@ function App() {
                 onClick={() => {
                   setAuth(2);
                   setError("");
-                  setSucces("");
+                  setSuccess("");
                   setVerify(1);
                 }}
               >
@@ -309,9 +309,9 @@ function App() {
         <form noValidate autoComplete="off" onSubmit={handleSubmit}>
           <div
             className="successPart"
-            style={succesState !== "" ? { background: "greenyellow" } : null}
+            style={successSate !== "" ? { background: "greenyellow" } : null}
           >
-            <b>{succesState}</b>
+            <b>{successSate}</b>
           </div>
           <div className="signUp">
             <Helmet>
@@ -470,7 +470,7 @@ function App() {
                 onClick={() => {
                   setAuth(0);
                   setError("");
-                  setSucces("");
+                  setSuccess("");
                   setVerify(1);
                 }}
               >
